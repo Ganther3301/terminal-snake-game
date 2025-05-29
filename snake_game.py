@@ -50,8 +50,12 @@ def main(stdscr):
         # Get next key press
         next_key = win.getch()
         
-        # If no key is pressed, use the previous key
-        key = key if next_key == -1 else next_key
+        # Define valid keys
+        valid_keys = [curses.KEY_UP, curses.KEY_DOWN, curses.KEY_LEFT, curses.KEY_RIGHT]
+        
+        # If no key is pressed or an invalid key is pressed, use the previous key
+        if next_key != -1 and next_key in valid_keys:
+            key = next_key
         
         # Calculate next position
         if key == curses.KEY_DOWN:
@@ -62,6 +66,9 @@ def main(stdscr):
             new_head = [snake[0][0], snake[0][1] - 1]
         elif key == curses.KEY_RIGHT:
             new_head = [snake[0][0], snake[0][1] + 1]
+        else:
+            # Default case (should never happen with our validation, but added as a safeguard)
+            new_head = [snake[0][0], snake[0][1] + 1]  # Default to moving right
         
         # Insert new head
         snake.insert(0, new_head)
